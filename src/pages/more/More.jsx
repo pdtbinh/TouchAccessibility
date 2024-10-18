@@ -9,9 +9,9 @@ export default function More() {
 
     const navigate = useNavigate()
 
-    const goToRules = () => navigate('/more/rules')
+    const goToRules = () => navigate('/rules')
 
-    const goToSettings = () => navigate('/more/settings')
+    const goToSettings = () => navigate('/settings')
 
     const goBack = () => navigate('/')
 

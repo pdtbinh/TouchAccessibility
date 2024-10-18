@@ -1,7 +1,9 @@
 import './MazeField.css'
 import Grid from '@mui/material/Grid';
 import MazeStep from './MazeStep';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import Player from '../player/Player';
+import Hammer from 'hammerjs';
 
 /*
 Maze design (`mazeStatus`):
@@ -23,6 +25,21 @@ Maze design (`mazeStatus`):
 */
 
 export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurrentStatus, handleCompleteMaze }) {
+
+    const refContainer = useRef();
+    const [dimensions, setDimensions] = useState({
+        width: 0,
+        height: 0,
+    });
+    useEffect(() => {
+        if (refContainer.current) {
+            setDimensions({
+                width: refContainer.current.offsetWidth,
+                height: refContainer.current.offsetHeight,
+            });
+        }
+    }, []);
+
 
     const calculateStepLength = (mazeWidth, fieldLength = 12) => {
         const stepLength = Math.floor(fieldLength / mazeWidth * 10) / 10 // round to nearest digit.
@@ -78,7 +95,7 @@ export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurren
     }
 
     const playerMove = (moveDirection) => {
-        if (!mazeFinished && !playerHitsWall(moveDirection))
+        if (!mazeFinished && !playerHitsWall(moveDirection) && moveDirection)
             moveDirectionToActionOnPlayerPosition[moveDirection]()
     }
 
@@ -88,6 +105,62 @@ export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurren
             handleCompleteMaze()
         }
     }
+
+    const calculateStepLengthInPx = () => {
+        console.log(dimensions.width);
+        return dimensions.width / mazeStatus.width;
+    }
+
+    const calculatePlayerXCoord = () => {
+        return playerPosition[1] * calculateStepLengthInPx();
+    }
+
+    const calculatePlayerYCoord = () => {
+        return playerPosition[0] * calculateStepLengthInPx();
+    }
+    const playerRef = useRef();
+    useEffect(() => {
+    
+        let playerHammerManager = new Hammer.Manager(playerRef.current);
+        console.log(playerRef.current);
+
+        var tap = new Hammer.Tap({
+            taps: 1
+        });
+
+        var swipe = new Hammer.Swipe({
+            threshold: 20,
+        })
+
+        playerHammerManager.add(tap);
+        playerHammerManager.add(swipe);
+
+
+        playerHammerManager.on("tap", () => {
+            console.log("tap");
+        })
+    
+        playerHammerManager.on("swipe", (ev) => {
+            const swipeDirection = ev.direction;
+    
+            switch (swipeDirection) {
+                case Hammer.DIRECTION_LEFT:
+                    playerMove("west");
+                    break;
+                case Hammer.DIRECTION_RIGHT:
+                    playerMove("east");
+                    break;
+                case Hammer.DIRECTION_UP:
+                    playerMove("north");
+                    break;
+                case Hammer.DIRECTION_DOWN:
+                    playerMove("south");
+                    break;
+                default:
+                    break;
+            }
+        })
+    })
 
     // For testing on development
     const keysToDirections = {
@@ -104,8 +177,10 @@ export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurren
 
     return (
         <Grid
-            container rowSpacing={0} columnSpacing={{ xs: 1 }}
-            className='maze-field'>
+        container rowSpacing={0} columnSpacing={{ xs: 1 }} ref={refContainer}
+        className='maze-field'>
+                <Player length={calculateStepLengthInPx()} x={calculatePlayerXCoord()} y={calculatePlayerYCoord()} innerRef={playerRef}></Player>
+            
             {mazeCurrentStatus.steps.flat().map(
                 step => <MazeStep
                     key={step.key}

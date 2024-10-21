@@ -1,4 +1,7 @@
 #player {
     position:absolute;
     z-index: 100000;
+    color: transparent;
+    background-color: transparent;
+    border:none;
 }

@@ -61,6 +61,6 @@ export default function Player({x, y, length, playerMove}) {
     })
 
     return (
-        <div id="player" style={statusToStyle(x,y,length)} ref={playerRef}></div>
+        <button id="player" style={statusToStyle(x,y,length)} ref={playerRef} aria-label="player"></button>
     )
 }

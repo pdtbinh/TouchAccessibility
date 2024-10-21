@@ -7,6 +7,7 @@ import Button from '../../components/buttons/Button'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import _ from 'lodash'
+import srSpeak from '../../components/aria/AriaLive'
 
 const mazeStatus = {
     width: 3,
@@ -90,7 +91,10 @@ export default function Maze() {
     const mazeStatusCopy = _.cloneDeep(mazeStatus)
     const [mazeCurrentStatus, setMazeCurrentStatus] = useState(mazeStatusCopy)
 
-    const handleCompleteMaze = () => setMazeCompleted(true)
+    const handleCompleteMaze = () => {
+        srSpeak("You escaped the maze!")
+        setMazeCompleted(true)
+    }
 
     const navigate = useNavigate()
 

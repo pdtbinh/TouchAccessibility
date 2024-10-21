@@ -1,4 +1,5 @@
 .maze-field {
+    position:relative;
     width: 90vw !important;
     max-width: 50vh;
     height: fit-content;

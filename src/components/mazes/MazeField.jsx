@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import MazeStep from './MazeStep';
 import { useEffect, useState, useRef, memo } from 'react';
 import Player from '../player/Player';
+import srSpeak from '../aria/AriaLive';
 
 /*
 Maze design (`mazeStatus`):
@@ -95,9 +96,10 @@ export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurren
         west: () => handlePlayerPositionChange(1, -1),
     }
 
-    const playerMove = (moveDirection) => {
+    const playerMove = (moveDirection) => {      
         if (!mazeFinished && !playerHitsWall(moveDirection) && moveDirection)
             moveDirectionToActionOnPlayerPosition[moveDirection]()
+            srResponse(moveDirection, playerHitsWall(moveDirection))
     }
 
     const finishMaze = () => {
@@ -119,6 +121,10 @@ export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurren
         return playerPosition[0] * calculateStepLengthInPx();
     }
 
+    const srResponse = (moveDirection, hitWall) => {
+        srSpeak(`Moving ${moveDirection}. ${hitWall ? "You hit a wall!" : ""}`)
+    }
+
     // For testing on development
     const keysToDirections = {
         ArrowUp: 'north',
@@ -126,6 +132,7 @@ export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurren
         ArrowDown: 'south',
         ArrowLeft: 'west'
     }
+
     const handleKeyDown = (event) => playerMove(keysToDirections[event.key])
     useEffect(() => {
         window.addEventListener("keydown", handleKeyDown)

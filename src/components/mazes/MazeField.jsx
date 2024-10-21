@@ -1,9 +1,8 @@
 import './MazeField.css'
 import Grid from '@mui/material/Grid';
 import MazeStep from './MazeStep';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, memo } from 'react';
 import Player from '../player/Player';
-import Hammer from 'hammerjs';
 
 /*
 Maze design (`mazeStatus`):
@@ -23,6 +22,8 @@ Maze design (`mazeStatus`):
     ],
 }
 */
+
+const PlayerMemo = memo(Player);
 
 export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurrentStatus, handleCompleteMaze }) {
 
@@ -107,7 +108,6 @@ export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurren
     }
 
     const calculateStepLengthInPx = () => {
-        console.log(dimensions.width);
         return dimensions.width / mazeStatus.width;
     }
 
@@ -118,49 +118,6 @@ export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurren
     const calculatePlayerYCoord = () => {
         return playerPosition[0] * calculateStepLengthInPx();
     }
-    const playerRef = useRef();
-    useEffect(() => {
-    
-        let playerHammerManager = new Hammer.Manager(playerRef.current);
-        console.log(playerRef.current);
-
-        var tap = new Hammer.Tap({
-            taps: 1
-        });
-
-        var swipe = new Hammer.Swipe({
-            threshold: 20,
-        })
-
-        playerHammerManager.add(tap);
-        playerHammerManager.add(swipe);
-
-
-        playerHammerManager.on("tap", () => {
-            console.log("tap");
-        })
-    
-        playerHammerManager.on("swipe", (ev) => {
-            const swipeDirection = ev.direction;
-    
-            switch (swipeDirection) {
-                case Hammer.DIRECTION_LEFT:
-                    playerMove("west");
-                    break;
-                case Hammer.DIRECTION_RIGHT:
-                    playerMove("east");
-                    break;
-                case Hammer.DIRECTION_UP:
-                    playerMove("north");
-                    break;
-                case Hammer.DIRECTION_DOWN:
-                    playerMove("south");
-                    break;
-                default:
-                    break;
-            }
-        })
-    })
 
     // For testing on development
     const keysToDirections = {
@@ -179,7 +136,7 @@ export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurren
         <Grid
         container rowSpacing={0} columnSpacing={{ xs: 1 }} ref={refContainer}
         className='maze-field'>
-                <Player length={calculateStepLengthInPx()} x={calculatePlayerXCoord()} y={calculatePlayerYCoord()} innerRef={playerRef}></Player>
+                <PlayerMemo length={calculateStepLengthInPx()} x={calculatePlayerXCoord()} y={calculatePlayerYCoord()} playerMove={playerMove}></PlayerMemo>
             
             {mazeCurrentStatus.steps.flat().map(
                 step => <MazeStep

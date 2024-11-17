@@ -1,4 +1,5 @@
 import './Home.css';
+import Blinder from '../../components/blinder/Blinder';
 import Canva from '../../components/canvas/Canva';
 import Button from '../../components/buttons/Button';
 import Holder from '../../components/holders/Holder';
@@ -15,6 +16,7 @@ export default function Home() {
 
   return (
     <Canva>
+      <Blinder></Blinder>
       <Holder>
         <Headline>MAZE</Headline>
         <Button onClick={goToMaze}>

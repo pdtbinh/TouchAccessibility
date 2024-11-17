@@ -1,5 +1,7 @@
 import './Router.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Blinder from '../components/blinder/Blinder';
+import Spots from '../components/spots/Spots';
 import Home from '../pages/home/Home';
 import Maze from '../pages/mazes/Maze';
 import More from '../pages/more/More';
@@ -9,6 +11,8 @@ import Settings from '../pages/settings/Settings';
 export default function Router() {
 	return (
 		<BrowserRouter>
+			<Blinder></Blinder>
+			<Spots></Spots>
 			<Routes>
 				<Route path="/" element={null}>
 					<Route index element={<Home />} />

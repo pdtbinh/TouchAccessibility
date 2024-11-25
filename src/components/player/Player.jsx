@@ -13,6 +13,7 @@ const statusToStyle = (x, y, length) => {
 
 export default function Player({x, y, length, playerMove}) {
     const playerRef = useRef();
+    const style = {...statusToStyle(x,y,length), touchAction: "none"}
     useEffect(() => {
     
         let playerHammerManager = new Hammer.Manager(playerRef.current);
@@ -23,7 +24,8 @@ export default function Player({x, y, length, playerMove}) {
         });
 
         var swipe = new Hammer.Swipe({
-            threshold: 20,
+            threshold: 100,
+            velocity: 0.2
         })
 
         playerHammerManager.add(tap);
@@ -61,6 +63,6 @@ export default function Player({x, y, length, playerMove}) {
     })
 
     return (
-        <button id="player" style={statusToStyle(x,y,length)} ref={playerRef} aria-label="player"></button>
+        <button id="player" style={style} ref={playerRef} aria-label="player. double-tap player and swipe to move"></button>
     )
 }

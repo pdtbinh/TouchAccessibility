@@ -152,6 +152,10 @@ export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurren
                     walls={step.walls}
                     reached={step.reached}
                     steppedOnByPlayer={playerPosition[0] === step.key[0] && playerPosition[1] === step.key[1]}
+                    relativeToPlayer={{
+                        vertical: playerPosition[0] - step.key[0],
+                        horizontal:  playerPosition[1] - step.key[1]
+                    }}
                 />
             )}
         </Grid>

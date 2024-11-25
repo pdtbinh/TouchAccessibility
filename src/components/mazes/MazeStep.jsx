@@ -28,10 +28,27 @@ const statusToStyle = (walls, reached, steppedOnByPlayer) => {
     return style
 }
 
-export default function MazeStep({ length, walls, reached, steppedOnByPlayer }) {
+const hintToPlayerPosition = (relativeToPlayer) => {
+    let hint = "Player is not on this tile. Player is to your "
+    if (relativeToPlayer.vertical < 0) {
+        hint += "north";
+    }
+    if (relativeToPlayer.vertical > 0) {
+        hint += "south";
+    }
+    if (relativeToPlayer.horizontal < 0) {
+        hint += "west";
+    }
+    if (relativeToPlayer.horizontal > 0) {
+        hint += "east";
+    }
+    return hint;
+}
+
+export default function MazeStep({ length, walls, reached, steppedOnByPlayer, relativeToPlayer }) {
     return (
         <Grid item xs={length}>
-            <div className='maze-step' style={statusToStyle(walls, reached, steppedOnByPlayer)}>
+            <div className='maze-step' style={statusToStyle(walls, reached, steppedOnByPlayer)} aria-label={!steppedOnByPlayer && hintToPlayerPosition(relativeToPlayer)}>
                 {steppedOnByPlayer ? <DirectionsRunIcon className='user-icon' /> : null}
             </div>
         </Grid>

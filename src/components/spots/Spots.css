@@ -8,4 +8,6 @@
     opacity: 0.9;
     box-shadow: 0px 0px 40px 40px #000000;
     z-index: 1000;
+    pointer-events: none;
+
 }

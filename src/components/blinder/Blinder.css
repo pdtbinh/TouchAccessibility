@@ -5,6 +5,8 @@
     width: 100vw;
     height: 100vh;
     z-index: 100;
+    backdrop-filter: blur(10px);
     pointer-events: none;
     background-color: rgba(53, 10, 10, 0.7);
+    box-shadow: inset 0px 0px 170px 170px rgba(0, 0, 0, 0.9);
 }

@@ -1,9 +1,11 @@
 .spot {
-    position: fixed;
+    position: relative;
     background-color: black;
+    backdrop-filter: blur(15px);
     border-radius: 100%;
     width: 200px;
     height: 200px;
-    opacity: 0.5;
+    opacity: 0.9;
+    box-shadow: 0px 0px 40px 40px #000000;
     z-index: 1000;
 }

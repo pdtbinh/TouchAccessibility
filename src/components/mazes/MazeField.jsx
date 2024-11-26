@@ -156,6 +156,7 @@ export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurren
                         vertical: playerPosition[0] - step.key[0],
                         horizontal:  playerPosition[1] - step.key[1]
                     }}
+                    mazeDimension={mazeCurrentStatus.width}
                 />
             )}
         </Grid>

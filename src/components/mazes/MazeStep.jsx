@@ -45,11 +45,12 @@ const hintToPlayerPosition = (relativeToPlayer) => {
     return hint;
 }
 
-export default function MazeStep({ length, walls, reached, steppedOnByPlayer, relativeToPlayer }) {
+export default function MazeStep({ length, walls, reached, steppedOnByPlayer, relativeToPlayer, mazeDimension }) {
+    console.log(mazeDimension)
     return (
         <Grid item xs={length}>
             <div className='maze-step' style={statusToStyle(walls, reached, steppedOnByPlayer)} aria-label={!steppedOnByPlayer && hintToPlayerPosition(relativeToPlayer)}>
-                {steppedOnByPlayer ? <DirectionsRunIcon className='user-icon' /> : null}
+                {steppedOnByPlayer ? <DirectionsRunIcon className={mazeDimension === 3 ? "user-icon" : "user-icon-small"} /> : null}
             </div>
         </Grid>
     )

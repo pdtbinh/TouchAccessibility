@@ -4,13 +4,17 @@ import Headline from '../../components/texts/Headline'
 import BodyText from '../../components/texts/BodyText'
 import MazeField from '../../components/mazes/MazeField'
 import Button from '../../components/buttons/Button'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import _ from 'lodash'
 import srSpeak from '../../components/aria/AriaLive'
 
+export default function Maze({ mazeStatus }) {
 
-export default function Maze({mazeStatus}) {
+
+
+
+
     const [mazeCompleted, setMazeCompleted] = useState(false)
 
     const mazeStatusCopy = _.cloneDeep(mazeStatus)

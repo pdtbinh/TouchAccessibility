@@ -4,6 +4,7 @@ import MazeStep from './MazeStep';
 import { useEffect, useState, useRef, memo } from 'react';
 import Player from '../player/Player';
 import srSpeak from '../aria/AriaLive';
+import ZingTouch from "zingtouch";
 
 /*
 Maze design (`mazeStatus`):
@@ -24,9 +25,47 @@ Maze design (`mazeStatus`):
 }
 */
 
-const PlayerMemo = memo(Player);
-
 export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurrentStatus, handleCompleteMaze }) {
+
+
+
+    const swipeAreaRef = useRef();
+
+    useEffect(() => {
+        const ztRegion = new ZingTouch.Region(
+            refContainer.current || document.body
+        );
+
+        // Attach a swipe gesture listener
+        ztRegion.bind(
+            refContainer.current || document.body,
+            "swipe",
+            (e) => {
+                console.log(e.detail)
+                const direction = e.detail.data[0].currentDirection;
+                if (direction >= 0 && direction <= 90) {
+                    playerMove('north')
+                    console.log("Swipe Up");
+                } else if (direction >= 135 && direction <= 225) {
+                    playerMove('west')
+                    console.log("Swipe Left");
+                } else if (direction >= 315 && direction <= 360) {
+                    playerMove('east')
+                    console.log("Swipe Right");
+                } else {
+                    playerMove('south')
+                    console.log("Swipe Down");
+                }
+            }
+        );
+
+        return () => {
+            ztRegion.unbind(refContainer.current, "swipe");
+        };
+    });
+
+
+
 
     const refContainer = useRef();
     const [dimensions, setDimensions] = useState({
@@ -96,10 +135,10 @@ export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurren
         west: () => handlePlayerPositionChange(1, -1),
     }
 
-    const playerMove = (moveDirection) => {      
+    const playerMove = (moveDirection) => {
         if (!mazeFinished && !playerHitsWall(moveDirection) && moveDirection)
             moveDirectionToActionOnPlayerPosition[moveDirection]()
-            srResponse(moveDirection, playerHitsWall(moveDirection))
+        srResponse(moveDirection, playerHitsWall(moveDirection))
     }
 
     const finishMaze = () => {
@@ -141,10 +180,10 @@ export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurren
 
     return (
         <Grid
-        container rowSpacing={0} columnSpacing={{ xs: 1 }} ref={refContainer}
-        className='maze-field'>
-                <PlayerMemo length={calculateStepLengthInPx()} x={calculatePlayerXCoord()} y={calculatePlayerYCoord()} playerMove={playerMove}></PlayerMemo>
-            
+            container rowSpacing={0} columnSpacing={{ xs: 1 }} ref={refContainer}
+            className='maze-field'>
+            {/*<PlayerMemo length={calculateStepLengthInPx()} x={calculatePlayerXCoord()} y={calculatePlayerYCoord()} playerMove={playerMove}></PlayerMemo>*/}
+
             {mazeCurrentStatus.steps.flat().map(
                 step => <MazeStep
                     key={step.key}
@@ -154,7 +193,7 @@ export default function MazeField({ mazeStatus, mazeCurrentStatus, setMazeCurren
                     steppedOnByPlayer={playerPosition[0] === step.key[0] && playerPosition[1] === step.key[1]}
                     relativeToPlayer={{
                         vertical: playerPosition[0] - step.key[0],
-                        horizontal:  playerPosition[1] - step.key[1]
+                        horizontal: playerPosition[1] - step.key[1]
                     }}
                     mazeDimension={mazeCurrentStatus.width}
                 />

@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <Canva>
-      <Blinder></Blinder>
+      {/*<Blinder></Blinder>*/}
       <Holder>
         <Headline>MAZE</Headline>
         <Button onClick={goToMaze}>

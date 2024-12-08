@@ -46,7 +46,7 @@ const hintToPlayerPosition = (relativeToPlayer) => {
 }
 
 export default function MazeStep({ length, walls, reached, steppedOnByPlayer, relativeToPlayer, mazeDimension }) {
-    console.log(mazeDimension)
+    //console.log(mazeDimension)
     return (
         <Grid item xs={length}>
             <div className='maze-step' style={statusToStyle(walls, reached, steppedOnByPlayer)} aria-label={!steppedOnByPlayer && hintToPlayerPosition(relativeToPlayer)}>

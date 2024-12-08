@@ -13,8 +13,8 @@ import { L3x3, L5x5 } from "../pages/levels/levelMaps/levelMaps";
 export default function Router() {
   return (
     <BrowserRouter>
-      <Blinder></Blinder>
-      <Spots></Spots>
+      {/*<Blinder></Blinder>*/}
+      {/*<Spots></Spots>*/}
       <Routes>
         <Route path="/" element={null}>
           <Route index element={<Home />} />

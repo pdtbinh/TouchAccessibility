@@ -13,7 +13,7 @@ export default function Spots() {
     const indices = Array.from({ length: 10 }, (_, index) => index);
 
     return (
-        <div style={{position: "fixed", width: "100vw", height: "100vh", zIndex: 10000, display: "flex", flexDirection: "column", alignItems: "center", pointerEvents: "none"}}>
+        <div style={{position: "fixed", width: "100vw", height: "100vh", zIndex: 10000, display: "flex", flexDirection: "column", alignItems: "center", pointerEvents: "none", backgroundColor: "transparent"}}>
 
         {    indices.map(
                 index => <div
